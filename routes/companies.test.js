@@ -106,6 +106,26 @@ describe("GET /companies", function () {
         .set("authorization", `Bearer ${u1Token}`);
     expect(resp.statusCode).toEqual(500);
   });
+
+  test("get companies using min and max employees param", async function () {
+    const resp = await request(app)
+        .get("/companies")
+        .query({
+          minEmployees: 0,
+          maxEmployees: 1
+        });
+    expect(resp.statusCode).toEqual(200);
+    expect(resp.body.companies.length).toBe(2);
+  });
+
+  test("get companies using name param", async function () {
+    const resp = await request(app)
+        .get("/companies")
+        .query({name: "C1"});
+    expect(resp.statusCode).toEqual(200);
+    expect(resp.body.companies.length).toBe(1);
+  });
+  
 });
 
 /************************************** GET /companies/:handle */
