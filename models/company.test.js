@@ -85,6 +85,40 @@ describe("findAll", function () {
       },
     ]);
   });
+
+  test('throws error: maxEmployees < minEmployees', async function () {
+    try {
+      query_params = { minEmployees: 0, maxEmployees: -1 }
+      let companies = await Company.findAll(query_params);
+    } catch (err) {
+      expect(err).toBeInstanceOf(ExpressError);
+      expect(err.status).toBe(400);
+    }
+  });
+
+  test('works: all filters', async function () {
+    const query_params = {
+      name: 'C', 
+      minEmployees: 2,
+      maxEmployees: 3
+    }
+    const companies = await Company.findAll(query_params);
+    expect(companies).toEqual([
+      {
+        handle: "c2",
+        name: "C2",
+        description: "Desc2",
+        numEmployees: 2,
+        logoUrl: "http://c2.img",
+      },
+      {
+        handle: "c3",
+        name: "C3",
+        description: "Desc3",
+        numEmployees: 3,
+        logoUrl: "http://c3.img",
+      }
+    ]);
 });
 
 /************************************** get */

@@ -112,16 +112,16 @@ describe("GET /companies", function () {
         .get("/companies")
         .query({
           minEmployees: 0,
-          maxEmployees: 1
+          maxEmployees: 2
         });
     expect(resp.statusCode).toEqual(200);
     expect(resp.body.companies.length).toBe(2);
   });
 
-  test("get companies using name param", async function () {
+  test("get companies using all param", async function () {
     const resp = await request(app)
         .get("/companies")
-        .query({name: "C1"});
+        .query({name: "C1", minEmployees: 0, maxEmployees: 1});
     expect(resp.statusCode).toEqual(200);
     expect(resp.body.companies.length).toBe(1);
   });
