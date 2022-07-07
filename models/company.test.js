@@ -91,7 +91,9 @@ describe("findAll", function () {
       query_params = { minEmployees: 0, maxEmployees: -1 }
       let companies = await Company.findAll(query_params);
     } catch (err) {
-      expect(err).toBeInstanceOf(ExpressError);
+      console.log(err)
+      
+      expect(err).toBeInstanceOf(BadRequestError);
       expect(err.status).toBe(400);
     }
   });
@@ -119,6 +121,7 @@ describe("findAll", function () {
         logoUrl: "http://c3.img",
       }
     ]);
+  });
 });
 
 /************************************** get */
