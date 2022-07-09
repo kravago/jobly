@@ -88,11 +88,11 @@ describe("findAll", function () {
 
   test('throws error: maxEmployees < minEmployees', async function () {
     try {
-      query_params = { minEmployees: 0, maxEmployees: -1 }
-      let companies = await Company.findAll(query_params);
+      const query_params = { minEmployees: 0, maxEmployees: -1 }
+      const companies = await Company.findAll(query_params);
     } catch (err) {
       console.log(err)
-      
+
       expect(err).toBeInstanceOf(BadRequestError);
       expect(err.status).toBe(400);
     }

@@ -52,6 +52,7 @@ class Company {
   static async findAll(query_params = {}) {
     const { name, minEmployees, maxEmployees} = query_params;
 
+    let queryVals = [];
     let base_query =  `SELECT handle,
           name,
           description,
@@ -61,7 +62,8 @@ class Company {
       WHERE 1=1`
 
     if (name !== undefined) {
-      base_query += ` AND name ILIKE %${name}`;
+      queryVals.push(name);
+      base_query += ` AND name ILIKE '%${name}%'`;
     }
 
     if ((minEmployees !== undefined && maxEmployees !== undefined) && (minEmployees > maxEmployees)) {
@@ -69,27 +71,24 @@ class Company {
     }
 
     if (minEmployees !== undefined) {
-      base_query += ` AND minEmployees <= %${minEmployees}`
+      queryVals.push(minEmployees);
+      base_query += ` AND num_employees >= ${minEmployees}`
     }
 
     if (maxEmployees !== undefined) {
-      base_query += ` AND maxEmployees >= %${maxEmployees}`
+      queryVals.push(maxEmployees);
+      base_query += ` AND num_employees <= ${maxEmployees}`
     }
 
     base_query += ' ORDER BY name'
 
+    console.log("**************************");
+    console.log(base_query);
+    console.log(queryVals);
+
     const companiesRes = await db.query(base_query);
     return companiesRes.rows;
 
-    // const companiesRes = await db.query(
-    //       `SELECT handle,
-    //               name,
-    //               description,
-    //               num_employees AS "numEmployees",
-    //               logo_url AS "logoUrl"
-    //        FROM companies
-    //        ORDER BY name`);
-    // return companiesRes.rows;
   }
 
   /** Given a company handle, return data about company.
