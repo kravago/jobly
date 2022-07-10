@@ -82,13 +82,8 @@ class Company {
 
     base_query += ' ORDER BY name'
 
-    console.log("**************************");
-    console.log(base_query);
-    console.log(queryVals);
-
     const companiesRes = await db.query(base_query);
     return companiesRes.rows;
-
   }
 
   /** Given a company handle, return data about company.
